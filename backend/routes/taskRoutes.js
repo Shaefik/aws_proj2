@@ -20,17 +20,18 @@ const task = new Task({
   }
 });
 
-// GET ALL TASKS
-router.get("/", async (req, res) => {
+
+router.get("/", protect, async (req, res) => {
   try {
-const tasks = await Task.find({ user: req.user._id })
-  .populate("user", "name email");
-      res.status(200).json(tasks);
+    const tasks = await Task.find({ user: req.user._id })
+      .populate("user", "name email");
+
+    res.status(200).json(tasks);
   } catch (error) {
+    console.log(error); 
     res.status(500).json({ message: error.message });
   }
 });
-
 
 router.put("/:id", protect, async (req,res) =>{
   try {
